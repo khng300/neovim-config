@@ -118,14 +118,14 @@ if has('persistent_undo')
 endif
 
 " Format
-set expandtab
+set noexpandtab
 set cindent
 set autoindent
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 set list
 
-set tabstop=4
-set shiftwidth=4
+set tabstop=8
+set shiftwidth=8
 
 " Session List
 set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
@@ -140,34 +140,42 @@ let g:airline_right_sep=' '
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
 
-" vim-lsp
+" vim-lsc
+let g:lsc_server_commands = {}
 if executable($HOME . '/Workspace/llvm-project/9.x-index-db/build-release/bin/clangd')
-    au User lsp_setup call lsp#register_server({
-                \ 'name': 'clangd',
-                \ 'cmd': {server_info->[$HOME . '/Workspace/llvm-project/9.x-index-db/build-release/bin/clangd', '--background-index']},
-                \ 'root_uri':{server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
-                \ 'whitelist': ['c', 'cpp'],
-                \ })
+    let clangdval = {
+                \ 'command': $HOME . '/Workspace/llvm-project/9.x-index-db/build-release/bin/clangd --background-index -j=2',
+                \ 'message_hooks': {
+                \     'initialize': {
+                \     },
+                \     'textDocument/didOpen': {'metadata': {'extraFlags': ['-Wall']}},
+                \ },
+                \ 'suppress_stderr': v:true,
+    \ }
+    let g:lsc_server_commands['c'] = clangdval
+    let g:lsc_server_commands['cpp'] = clangdval
 endif
-nmap <Leader>ld <plug>(lsp-definition)
-nmap <leader>lD <plug>(lsp-document-diagnostics)
-nmap <leader>lf <plug>(lsp-document-format)
-vmap <leader>lf <plug>(lsp-document-format)
-nmap <leader>lh <plug>(lsp-hover)
-nmap <leader>lpe <plug>(lsp-previous-error)
-nmap <leader>lne <plug>(lsp-next-error)
-nmap <leader>lpr <plug>(lsp-previous-references)
-nmap <leader>lnr <plug>(lsp-next-references)
-nmap <leader>lPd <plug>(lsp-peek-declaration)
-nmap <Leader>lr <plug>(lsp-references)
-nmap <leader>l, <plug>(lsp-rename)
-nmap <leader>ls <plug>(lsp-status)
-nmap <leader>lw <plug>(lsp-workspace-symbol)
-let g:lsp_virtual_text_enabled = 0
-let g:lsp_virtual_text_prefix = "> "
-let g:asyncomplete_auto_popup = 0
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-let g:lsp_signs_enabled = 1         " enable signs
-let g:lsp_signs_error = {'text': '✗'}
-let g:lsp_signs_warning = {'text': '!'}
+let g:lsc_auto_map = {'defaults': v:true}
+""nmap <Leader>ld <plug>(lsp-definition)
+""nmap <leader>lD <plug>(lsp-document-diagnostics)
+""nmap <leader>lf <plug>(lsp-document-format)
+""vmap <leader>lf <plug>(lsp-document-format)
+""nmap <leader>lh <plug>(lsp-hover)
+""nmap <leader>lpe <plug>(lsp-previous-error)
+""nmap <leader>lne <plug>(lsp-next-error)
+""nmap <leader>lpr <plug>(lsp-previous-references)
+""nmap <leader>lnr <plug>(lsp-next-references)
+""nmap <leader>lPd <plug>(lsp-peek-declaration)
+""nmap <Leader>lr <plug>(lsp-references)
+""nmap <leader>l, <plug>(lsp-rename)
+""nmap <leader>ls <plug>(lsp-status)
+""nmap <leader>lw <plug>(lsp-workspace-symbol)
+""let g:lsp_virtual_text_enabled = 0
+""let g:lsp_virtual_text_prefix = "> "
+""let g:asyncomplete_auto_popup = 0
+""imap <c-space> <Plug>(asyncomplete_force_refresh)
+""let g:lsp_signs_enabled = 1         " enable signs
+""let g:lsp_signs_error = {'text': '✗'}
+""let g:lsp_signs_warning = {'text': '!'}
+
 " }
