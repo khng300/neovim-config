@@ -155,7 +155,8 @@ if executable($HOME . '/Workspace/llvm-project/9.x-index-db/build-release/bin/cl
     let g:lsc_server_commands['c'] = clangdval
     let g:lsc_server_commands['cpp'] = clangdval
 endif
-let g:lsc_auto_map = {'defaults': v:true}
+set omnifunc=lsc#complete#complete
+let g:lsc_auto_map = {'defaults': v:true, 'Completion': 'omnifunc'}
 ""nmap <Leader>ld <plug>(lsp-definition)
 ""nmap <leader>lD <plug>(lsp-document-diagnostics)
 ""nmap <leader>lf <plug>(lsp-document-format)
