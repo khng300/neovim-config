@@ -175,6 +175,7 @@ let g:lsp_signs_enabled = 0
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
     setlocal completeopt-=preview
+    setlocal keywordprg=:LspHover
 
     nmap <buffer> <C-]> <plug>(lsp-definition)
     nmap <buffer> <C-W>] <plug>(lsp-peekdefinition)
