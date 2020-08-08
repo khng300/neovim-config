@@ -72,10 +72,10 @@ syntax on
 
 " Coloring
 nnoremap <Leader>c :set cursorline!<CR>
-color molokai
 if has('termguicolors')
     set termguicolors
 endif
+color corvine_light
 
 " hi-lighter
 set cursorline
@@ -142,9 +142,9 @@ let g:airline_theme='solarized'
 
 " vim-lsc
 let g:lsc_server_commands = {}
-if executable($HOME . '/Workspace/llvm-project/9.x-index-db/build-release/bin/clangd')
+if executable($HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd')
     let clangdval = {
-                \ 'command': $HOME . '/Workspace/llvm-project/9.x-index-db/build-release/bin/clangd --background-index -j=2',
+                \ 'command': $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd --background-index -j=8',
                 \ 'message_hooks': {
                 \     'initialize': {
                 \     },

@@ -2,7 +2,7 @@
 
 " Basics
 set nocompatible        " Must be first line
-set background=dark     " Assume a dark background
+set background=light     " Assume a light background
 
 " Setup Plugin Support
 " The next three lines ensure that the ~/.vim/bundle/ system works
@@ -32,8 +32,7 @@ elseif executable('ack')
 endif
 
 " General
-Plug 'altercation/vim-colors-solarized'
-Plug 'spf13/vim-colors'
+Plug 'arzg/vim-corvine'
 Plug 'tpope/vim-surround'
 Plug 'spf13/vim-autoclose'
 
@@ -41,12 +40,9 @@ Plug 'vim-scripts/sessionman.vim'
 Plug 'tmhedberg/matchit'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-"Plug 'bling/vim-bufferline'
-Plug 'flazz/vim-colorschemes'
 Plug 'mbbill/undotree'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-scripts/restore_view.vim'
-"Plug 'mhinz/vim-signify'
 Plug 'osyo-manga/vim-over'
 Plug 'gcmt/wildfire.vim'
 
