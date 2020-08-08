@@ -141,42 +141,59 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
 
 " vim-lsc
-let g:lsc_server_commands = {}
-if executable($HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd')
-    let clangdval = {
-                \ 'command': $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd --background-index -j=8',
-                \ 'message_hooks': {
-                \     'initialize': {
-                \     },
-                \     'textDocument/didOpen': {'metadata': {'extraFlags': ['-Wall']}},
-                \ },
-                \ 'suppress_stderr': v:true,
-    \ }
-    let g:lsc_server_commands['c'] = clangdval
-    let g:lsc_server_commands['cpp'] = clangdval
+"let g:lsc_server_commands = {}
+"if executable($HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd')
+"    let clangdval = {
+"                \ 'command': $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd --background-index -j=8',
+"                \ 'message_hooks': {
+"                \     'initialize': {
+"                \     },
+"                \     'textDocument/didOpen': {'metadata': {'extraFlags': ['-Wall']}},
+"                \ },
+"                \ 'suppress_stderr': v:true,
+"    \ }
+"    let g:lsc_server_commands['c'] = clangdval
+"    let g:lsc_server_commands['cpp'] = clangdval
+"endif
+"set omnifunc=lsc#complete#complete
+"let g:lsc_auto_map = {'defaults': v:true, 'Completion': 'omnifunc'}
+
+" vim-lsp
+let s:clangd_lsppath = $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd'
+if executable(s:clangd_lsppath)
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->[s:clangd_lsppath, '-background-index', '-j=2']},
+        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
 endif
-set omnifunc=lsc#complete#complete
-let g:lsc_auto_map = {'defaults': v:true, 'Completion': 'omnifunc'}
-""nmap <Leader>ld <plug>(lsp-definition)
-""nmap <leader>lD <plug>(lsp-document-diagnostics)
-""nmap <leader>lf <plug>(lsp-document-format)
-""vmap <leader>lf <plug>(lsp-document-format)
-""nmap <leader>lh <plug>(lsp-hover)
-""nmap <leader>lpe <plug>(lsp-previous-error)
-""nmap <leader>lne <plug>(lsp-next-error)
-""nmap <leader>lpr <plug>(lsp-previous-references)
-""nmap <leader>lnr <plug>(lsp-next-references)
-""nmap <leader>lPd <plug>(lsp-peek-declaration)
-""nmap <Leader>lr <plug>(lsp-references)
-""nmap <leader>l, <plug>(lsp-rename)
-""nmap <leader>ls <plug>(lsp-status)
-""nmap <leader>lw <plug>(lsp-workspace-symbol)
-""let g:lsp_virtual_text_enabled = 0
-""let g:lsp_virtual_text_prefix = "> "
-""let g:asyncomplete_auto_popup = 0
-""imap <c-space> <Plug>(asyncomplete_force_refresh)
-""let g:lsp_signs_enabled = 1         " enable signs
-""let g:lsp_signs_error = {'text': '✗'}
-""let g:lsp_signs_warning = {'text': '!'}
+
+let g:lsp_virtual_text_enabled = 0
+let g:lsp_signs_enabled = 0
+"let g:lsp_signs_error = {'text': '✗'}
+"let g:lsp_signs_warning = {'text': '!'}
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal completeopt-=preview
+
+    nmap <buffer> <C-]> <plug>(lsp-definition)
+    nmap <buffer> <C-W>] <plug>(lsp-peekdefinition)
+    nmap <buffer> <C-W><C-]> <plug>(lsp-peekdefinition)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> <C-n> <plug>(lsp-next-reference)
+    nmap <buffer> <C-p> <plug>(lsp-previous-reference)
+    nmap <buffer> gI <plug>(lsp-implementation)
+    nmap <buffer> go <plug>(lsp-document-symbol)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol)
+    nmap <buffer> ga <plug>(lsp-code-action)
+    nmap <buffer> gR <plug>(lsp-rename)
+    nmap <buffer> gm <plug>(lsp-signature-help)
+
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 
 " }

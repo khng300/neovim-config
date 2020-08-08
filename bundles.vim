@@ -53,7 +53,10 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 
 " LSP
-Plug 'natebosch/vim-lsc'
+"Plug 'natebosch/vim-lsc'
+Plug 'prabirshrestha/vim-lsp'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Misc
 Plug 'tpope/vim-markdown'
