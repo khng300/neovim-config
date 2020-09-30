@@ -18,31 +18,16 @@ exec 'source' . ' ' . g:home_path . '/vim-plug/plug.vim'
 " Begin plugins listing
 call plug#begin(g:plugin_path)
 
-" Deps
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-if executable('ag')
-        Plug 'mileszs/ack.vim'
-        let g:ackprg = 'ag --nogroup --nocolor --column --smart-case'
-elseif executable('ack-grep')
-        let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-        Plug 'mileszs/ack.vim'
-elseif executable('ack')
-        Plug 'mileszs/ack.vim'
-endif
-
-" General
+" Themes
 Plug 'arzg/vim-corvine'
-Plug 'tpope/vim-surround'
-Plug 'spf13/vim-autoclose'
-
-Plug 'vim-scripts/sessionman.vim'
-Plug 'tmhedberg/matchit'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" General
+Plug 'tpope/vim-surround'
+Plug 'tmhedberg/matchit'
 Plug 'mbbill/undotree'
 Plug 'nathanaelkane/vim-indent-guides'
-Plug 'vim-scripts/restore_view.vim'
 Plug 'osyo-manga/vim-over'
 Plug 'gcmt/wildfire.vim'
 
@@ -52,11 +37,13 @@ Plug 'mattn/gist-vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 
+" Debugging
+Plug 'sakhnik/nvim-gdb'
+
 " LSP
-"Plug 'natebosch/vim-lsc'
 Plug 'prabirshrestha/vim-lsp'
-"Plug 'prabirshrestha/asyncomplete.vim'
-"Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 " Misc
 Plug 'tpope/vim-markdown'

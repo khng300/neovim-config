@@ -140,30 +140,12 @@ let g:airline_right_sep=' '
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
 
-" vim-lsc
-"let g:lsc_server_commands = {}
-"if executable($HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd')
-"    let clangdval = {
-"                \ 'command': $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd --background-index -j=8',
-"                \ 'message_hooks': {
-"                \     'initialize': {
-"                \     },
-"                \     'textDocument/didOpen': {'metadata': {'extraFlags': ['-Wall']}},
-"                \ },
-"                \ 'suppress_stderr': v:true,
-"    \ }
-"    let g:lsc_server_commands['c'] = clangdval
-"    let g:lsc_server_commands['cpp'] = clangdval
-"endif
-"set omnifunc=lsc#complete#complete
-"let g:lsc_auto_map = {'defaults': v:true, 'Completion': 'omnifunc'}
-
 " vim-lsp
 let s:clangd_lsppath = $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd'
 if executable(s:clangd_lsppath)
     au User lsp_setup call lsp#register_server({
         \ 'name': 'clangd',
-        \ 'cmd': {server_info->[s:clangd_lsppath, '-background-index', '-j=2']},
+        \ 'cmd': {server_info->[s:clangd_lsppath, '-background-index', '-j=4']},
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
         \ })
 endif
@@ -177,9 +159,12 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal completeopt-=preview
     setlocal keywordprg=:LspHover
 
+    let g:lsp_log_verbose = 1
+    let g:lsp_log_file = expand('/tmp/lsp.log')
+
     nmap <buffer> <C-]> <plug>(lsp-definition)
-    nmap <buffer> <C-W>] <plug>(lsp-peekdefinition)
-    nmap <buffer> <C-W><C-]> <plug>(lsp-peekdefinition)
+    nmap <buffer> <C-W>] <plug>(lsp-peek-definition)
+    nmap <buffer> <C-W><C-]> <plug>(lsp-peek-definition)
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> <C-n> <plug>(lsp-next-reference)
     nmap <buffer> <C-p> <plug>(lsp-previous-reference)
