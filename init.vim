@@ -74,9 +74,6 @@ function! PackInit() abort
     call minpac#add('scrooloose/nerdcommenter')
     call minpac#add('godlygeek/tabular')
 
-    " Debugging
-    call minpac#add('sakhnik/nvim-gdb')
-
     " LSP
     call minpac#add('prabirshrestha/vim-lsp')
     call minpac#add('prabirshrestha/asyncomplete.vim')
@@ -104,6 +101,7 @@ if empty(minpac#getpluglist())
     finish
 endif
 
+packadd termdebug
 " }
 
 " Start of custom setting {
