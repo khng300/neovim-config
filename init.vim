@@ -3,10 +3,6 @@ let s:user_config_dir = stdpath("config")
 let s:user_cache_dir = stdpath("cache")
 " }
 
-" Load plugin manager. {
-call execute('source ' . substitute(s:user_config_dir . "/bundles.vim", " ", "\\\\ ", "g"))
-" }
-
 " Warning echo helper {
 function! s:print_warning(msg)
     echohl WarningMsg
@@ -48,11 +44,69 @@ function! init#init_cache_directory()
         endif
     endfor
 endfunction
+
+" Initialize directories we may need
+call init#init_cache_directory()
+
+" }
+
+" Start of plugin manager section {
+packadd minpac
+
+function! PackInit() abort
+    " Themes
+    call minpac#add('arzg/vim-corvine')
+    call minpac#add('vim-airline/vim-airline')
+    call minpac#add('vim-airline/vim-airline-themes')
+
+    " General
+    call minpac#add('tpope/vim-surround')
+    call minpac#add('tmhedberg/matchit')
+    call minpac#add('mbbill/undotree')
+    call minpac#add('nathanaelkane/vim-indent-guides')
+    call minpac#add('osyo-manga/vim-over')
+    call minpac#add('gcmt/wildfire.vim')
+    call minpac#add('vim-scripts/restore_view.vim')
+
+    " General Programming
+    call minpac#add('tpope/vim-fugitive')
+    call minpac#add('mattn/gist-vim')
+    call minpac#add('scrooloose/nerdcommenter')
+    call minpac#add('godlygeek/tabular')
+
+    " Debugging
+    call minpac#add('sakhnik/nvim-gdb')
+
+    " LSP
+    call minpac#add('prabirshrestha/vim-lsp')
+    call minpac#add('prabirshrestha/asyncomplete.vim')
+    call minpac#add('prabirshrestha/asyncomplete-lsp.vim')
+
+    " Misc
+    call minpac#add('tpope/vim-markdown')
+    call minpac#add('spf13/vim-preview')
+endfunction
+
+if !exists('g:loaded_minpac')
+    finish
+endif
+
+" Define user commands for updating/cleaning the plugins.
+command! PackUpdate call minpac#update()
+command! PackClean  call minpac#clean()
+command! PackStatus call minpac#status()
+command! ConfigReload source $MYVIMRC
+
+call minpac#init()
+call PackInit()
+
+if empty(minpac#getpluglist())
+    finish
+endif
+
 " }
 
 " Start of custom setting {
-" Initialize directories we may need
-call init#init_cache_directory()
 
 " Backspace
 set backspace=2
@@ -75,6 +129,7 @@ nnoremap <Leader>c :set cursorline!<CR>
 if has('termguicolors')
     set termguicolors
 endif
+set background=light     " Assume a light background
 color corvine_light
 
 " hi-lighter
@@ -129,9 +184,6 @@ set shiftwidth=8
 
 " Session List
 set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-nmap <leader>sl :SessionList<CR>
-nmap <leader>ss :SessionSave<CR>
-nmap <leader>sc :SessionClose<CR>
 
 " Powerline
 "let g:airline_powerline_fonts = 1
