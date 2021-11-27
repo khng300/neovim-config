@@ -191,14 +191,36 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
 
 " vim-lsp
-let s:clangd_lsppath = $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd'
-if executable(s:clangd_lsppath)
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'cmd': {server_info->[s:clangd_lsppath, '-background-index', '-j=4']},
-        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-        \ })
-endif
+"let s:clangd_lsppath = $HOME . '/.local/llvm11/bin/clangd'
+"let s:clangd_init_options = {}
+"let s:clangd_cdb = getenv('NVIM_CLANGD_CDB')
+"if s:clangd_cdb != v:null
+"  let s:clangd_init_options['compilationDatabasePath'] = s:clangd_cdb
+"  let s:clangd_indexdb_prefix = getenv('CLANGD_INDEXDB_PREFIX')
+"  if s:clangd_indexdb_prefix != v:null
+"    let s:clangd_indexdb_prefix = s:clangd_indexdb_prefix .
+"        \ '/' . fnamemodify(s:clangd_cdb, ":t")
+"    call setenv('CLANGD_INDEXDB_PREFIX', s:clangd_indexdb_prefix)
+"  endif
+"endif
+"if executable(s:clangd_lsppath)
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'clangd',
+"        \ 'cmd': {server_info->[s:clangd_lsppath, '--background-index', '-j=24', '-header-insertion=never']},
+"        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+"        \ 'initialization_options': s:clangd_init_options,
+"        \ })
+"endif
+au User lsp_setup call lsp#register_server({
+    \ 'name': 'ccls',
+    \ 'cmd': {server_info->['ccls']},
+    \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+    \ 'initialization_options': {
+    \     'cache': {
+    \         'hierarchicalPath': v:true,
+    \         'directory': '/ws-zroot/userdata/khng/ccls/' . getcwd()
+    \     }
+    \ }})
 
 let g:lsp_virtual_text_enabled = 0
 let g:lsp_signs_enabled = 0
@@ -209,8 +231,8 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal completeopt-=preview
     setlocal keywordprg=:LspHover
 
-    let g:lsp_log_verbose = 1
-    let g:lsp_log_file = expand('/tmp/lsp.log')
+    "let g:lsp_log_verbose = 1
+    "let g:lsp_log_file = expand('/tmp/lsp.log')
 
     nmap <buffer> <C-]> <plug>(lsp-definition)
     nmap <buffer> <C-W>] <plug>(lsp-peek-definition)
