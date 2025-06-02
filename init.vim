@@ -101,7 +101,6 @@ if empty(minpac#getpluglist())
     finish
 endif
 
-packadd termdebug
 " }
 
 " Start of custom setting {
@@ -190,13 +189,27 @@ let g:airline_right_sep=' '
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='solarized'
 
+" vim-lsp2
+"let s:ccls_lsppath = $HOME . '/my-install/ccls/bin/ccls'
+"let s:ccls_init_options = {}
+"if executable(s:ccls_lsppath)
+"    au User lsp_setup call lsp#register_server({
+"        \ 'name': 'ccls',
+"        \ 'cmd': {server_info->[s:ccls_lsppath]},
+"        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+"        \ 'initialization_options': s:ccls_init_options,
+"        \ })
+"endif
 " vim-lsp
-let s:clangd_lsppath = $HOME . '/Workspace/llvm-project/10.x-dbindex/build-release/bin/clangd'
+let s:clangd_lsppath = '/opt/utils/local/llvm20/bin/clangd'
+"let s:clangd_lsppath = '/usr/local/bin/clangd20'
+let s:clangd_init_options = {}
 if executable(s:clangd_lsppath)
     au User lsp_setup call lsp#register_server({
         \ 'name': 'clangd',
-        \ 'cmd': {server_info->[s:clangd_lsppath, '-background-index', '-j=4']},
+        \ 'cmd': {server_info->[s:clangd_lsppath, '--background-index', '-j=24', '-header-insertion=never']},
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ 'initialization_options': s:clangd_init_options,
         \ })
 endif
 
@@ -209,8 +222,8 @@ function! s:on_lsp_buffer_enabled() abort
     setlocal completeopt-=preview
     setlocal keywordprg=:LspHover
 
-    let g:lsp_log_verbose = 1
-    let g:lsp_log_file = expand('/tmp/lsp.log')
+    "let g:lsp_log_verbose = 1
+    "let g:lsp_log_file = expand('/tmp/lsp.log')
 
     nmap <buffer> <C-]> <plug>(lsp-definition)
     nmap <buffer> <C-W>] <plug>(lsp-peek-definition)
